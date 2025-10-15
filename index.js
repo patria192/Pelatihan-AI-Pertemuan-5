@@ -5,6 +5,7 @@ import multer from "multer";
 import { GoogleGenAI } from "@google/genai";
 
 import 'dotenv/config';
+import { config } from "dotenv";
 
 //inisiasi aplikasi
 
@@ -71,6 +72,108 @@ app.post('/generate-text', async (req, res) => {
     }
 });
 
+app.post('/generate-from-image', upload.single("image"), async (req, res) => {
+    const { prompt } = req.body;
+    const base64Image = req.file.buffer.toString("base64");
+
+    try{
+        const aiResponse = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: [
+                {text: prompt, type: "text"},
+                {inlineData: {
+                    data: base64Image,
+                    mimeType: req.file.mimetype
+                }}
+            ],
+            config: {
+                systemInstruction: "harus dibalas dengan bahasa indonesia"
+            }
+        });
+
+        res.status(200).json({
+            success: true,
+            message: 'Berhasil dijawab Gemini AI',
+            data: aiResponse.text
+        })
+    }catch(e){
+        console.log(e);
+        res.status(500).json({
+            success: false,
+            message: 'Sepertinya server sedang masalah',
+            data: null
+        })
+    }
+})
+
+app.post('/generate-from-document', upload.single("document"), async (req, res) => {
+    const { prompt } = req.body;
+    const base64Document = req.file.buffer.toString("base64");
+
+    try{
+        const aiResponse = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: [
+                {text: prompt, type: "text"},
+                {inlineData: {
+                    data: base64Document,
+                    mimeType: req.file.mimetype
+                }}
+            ],
+            config: {
+                systemInstruction: "harus dibalas dengan bahasa indonesia"
+            }
+        });
+
+        res.status(200).json({
+            success: true,
+            message: 'Berhasil dijawab Gemini AI',
+            data: aiResponse.text
+        })
+    }catch(e){
+        console.log(e);
+        res.status(500).json({
+            success: false,
+            message: 'Sepertinya server sedang masalah',
+            data: null
+        })
+    }
+});
+
+app.post('/generate-from-audio', upload.single("audio"), async (req, res) => {
+    const { prompt } = req.body;
+    const base64Audio = req.file.buffer.toString("base64");
+
+    try{
+        const aiResponse = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: [
+                {text: prompt, type: "text"},
+                {inlineData: {
+                    data: base64Audio,
+                    mimeType: req.file.mimetype
+                }}
+            ],
+            config: {
+                systemInstruction: "harus dibalas dengan bahasa indonesia"
+            }
+        });
+
+        res.status(200).json({
+            success: true,
+            message: 'Berhasil dijawab Gemini AI',
+            data: aiResponse.text
+        })
+    }catch(e){
+        console.log(e);
+        res.status(500).json({
+            success: false,
+            message: 'Sepertinya server sedang masalah',
+            data: null
+        })
+    }
+})
+
 app.listen(3000, () => {
     console.log('Server running di port 3000')
-})
+});
