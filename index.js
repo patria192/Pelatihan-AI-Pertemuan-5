@@ -4,8 +4,17 @@ import cors from "cors";
 import multer from "multer";
 import { GoogleGenAI } from "@google/genai";
 
+//pertemua 5 ()
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
 import 'dotenv/config';
 import { config } from "dotenv";
+import { error } from "node:console";
+
+//pertemuan 5
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 //inisiasi aplikasi
 
@@ -25,6 +34,9 @@ const ai = new GoogleGenAI({}); //instantion mejadi object instance (oop (object
 //contoh app.use(namaMiddleware)
 app.use(cors()); //inisialisasi CORS (cross origin resource sharing) sebagai middleware
 app.use(express.json()); //memanggil property didalam object
+
+//pertemuan 5
+app.use(express.static(path.join(__dirname, 'static')));
 
 //inisialisasi routing
 //contoh: app.get(), app.put(), app.post(), dll
@@ -172,7 +184,91 @@ app.post('/generate-from-audio', upload.single("audio"), async (req, res) => {
             data: null
         })
     }
-})
+});
+
+app.post("/api/chat", async (req, res) => {
+    const { conversation } = req.body;
+
+    try{
+        if(!Array.isArray(conversation)){
+            res.status(400).json({
+                success: false,
+                message: "Conversation harus berupa array",
+                data: null
+            });
+            return
+        }
+
+        let messageIsValid = "true";
+
+        if(conversation.length === 0){
+            res.status(400).json({
+                success: false,
+                message: "Conversation tidak boleh kosong",
+                data: null
+            });
+        }
+
+        conversation.forEach(message => {
+            if(!message || typeof message !== "object") {
+                messageIsValid = "false";
+            return
+            }
+
+            const keys = Object.keys(message);
+            const objectHasValidKeys = keys.every((key) => 
+                ["text","role"].includes(key),
+            );
+
+            if(keys.length !== 2 || !objectHasValidKeys){
+              messageIsValid = false;
+              return
+            }
+
+        const {text,role} = message;
+
+        if(!["model","user"].includes(role)){
+            messageIsValid = false;
+            return
+        }
+
+        if(!text || typeof text !== "string"){
+            messageIsValid = false;
+            return
+        }
+        });
+
+        if(!messageIsValid){
+            throw new Error("Message Harus Valied")
+        }
+
+        //proses daging nya
+        const contents = conversation.map(({role,text})=>({
+            role,
+            parts: [{text}],
+        }));
+
+        const aiResponse = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents,
+            config:{
+                systemInstruction: "Harus dalam bahasa sunda.",
+           },
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Berhasil dijawab Gemini AI",
+            data: aiResponse.text,
+        });
+    }catch(e){
+        res.status(500).json({
+            success: false,
+            message: "Sepertinya server sedang masalah."+e.message,
+            data: null
+        });
+    }
+});
 
 app.listen(3000, () => {
     console.log('Server running di port 3000')
