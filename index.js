@@ -12,9 +12,14 @@ import 'dotenv/config';
 import { config } from "dotenv";
 import { error } from "node:console";
 
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+
 //pertemuan 5
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 
 //inisiasi aplikasi
 
@@ -37,6 +42,7 @@ app.use(express.json()); //memanggil property didalam object
 
 //pertemuan 5
 app.use(express.static(path.join(__dirname, 'static')));
+const dataBukuObject = require(path.join(__dirname,`knowledge/dataBuku.json`));
 
 //inisialisasi routing
 //contoh: app.get(), app.put(), app.post(), dll
@@ -207,6 +213,7 @@ app.post("/api/chat", async (req, res) => {
                 message: "Conversation tidak boleh kosong",
                 data: null
             });
+            return
         }
 
         conversation.forEach(message => {
@@ -239,7 +246,7 @@ app.post("/api/chat", async (req, res) => {
         });
 
         if(!messageIsValid){
-            throw new Error("Message Harus Valied")
+            throw new Error("Message Harus Valid")
         }
 
         //proses daging nya
@@ -248,11 +255,17 @@ app.post("/api/chat", async (req, res) => {
             parts: [{text}],
         }));
 
+        const dataBukuObject = require('./knowledge/dataBuku.json');
+        const dataBukuString = JSON.stringify(dataBukuObject.daftar_buku, null, 2);
+
         const aiResponse = await ai.models.generateContent({
             model: "gemini-2.5-flash",
             contents,
             config:{
-                systemInstruction: "Harus dalam bahasa sunda.",
+                systemInstruction: `Anda adalah seorang pustakawan. Jawablah pertanyaan berikut dengan baik, sopan, intuitif, ramah untuk orang senior sampai anak-anak dan HANYA berdasarkan konteks yang diberikan. Jika informasinya tidak ada, katakan 'Data buku tersebut tidak tersedia dalam katalog. konteks sebagai berikut:
+                ${dataBukuString}
+                dan jika ada berikan sedikit sinopsis (50 kata saja) diambil data dari internet
+                `.trim(),
            },
         });
 

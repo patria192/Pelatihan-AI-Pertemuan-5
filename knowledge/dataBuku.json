@@ -1,0 +1,38 @@
+{
+  "toko_buku": "MediaGra",
+  "total_buku": 3,
+  "daftar_buku": [
+    {
+      "id": 1,
+      "judul": "Filosofi Teras",
+      "penulis": "Henry Manampiring",
+      "tahun_terbit": 2018,
+      "genre": ["Non-Fiksi","Pengembangan Diri"],
+      "isbn": "978-602-482071-3"
+    },
+    {
+      "id": 2,
+      "judul": "Bumi Manusia",
+      "penulis": "Pramoedya Ananta Toer",
+      "tahun_terbit": 1980,
+      "genre": ["Fiksi","Sejarah"],
+      "isbn": "978-979-910543-1"
+    },
+    {
+      "id": 3,
+      "judul": "Atomic Habits",
+      "penulis": "James Clear",
+      "tahun_terbit": 2018,
+      "genre": ["Non-Fiksi","Pengembangan Diri"],
+      "isbn": "978-073-521129-2"
+    },
+    {
+      "id": 4,
+      "judul": "Naruto",
+      "penulis": "Masashi Kishimoto",
+      "tahun_terbit": 1997,
+      "genre": ["komik","petualangan"],
+      "isbn": "988-153-523329-2"
+    }
+  ]
+}
