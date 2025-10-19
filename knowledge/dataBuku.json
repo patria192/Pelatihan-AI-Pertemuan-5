@@ -33,6 +33,14 @@
       "tahun_terbit": 1997,
       "genre": ["komik","petualangan"],
       "isbn": "988-153-523329-2"
+    },
+    {
+      "id": 5,
+      "judul": "Harry Potter dan Batu Bertuah",
+      "penulis": "J.K. Rowling",
+      "tahun_terbit": 1997,
+      "genre": ["novel","fiksi fantasi"],
+      "isbn": "910-153-522129-6"
     }
   ]
 }

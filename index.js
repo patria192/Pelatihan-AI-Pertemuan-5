@@ -257,13 +257,15 @@ app.post("/api/chat", async (req, res) => {
 
         const dataBukuObject = require('./knowledge/dataBuku.json');
         const dataBukuString = JSON.stringify(dataBukuObject.daftar_buku, null, 2);
+        const dataBukuHead = JSON.stringify(dataBukuObject.toko_buku, null, 2);
 
         const aiResponse = await ai.models.generateContent({
             model: "gemini-2.5-flash",
             contents,
             config:{
-                systemInstruction: `Anda adalah seorang pustakawan. Jawablah pertanyaan berikut dengan baik, sopan, intuitif, ramah untuk orang senior sampai anak-anak dan HANYA berdasarkan konteks yang diberikan. Jika informasinya tidak ada, katakan 'Data buku tersebut tidak tersedia dalam katalog. konteks sebagai berikut:
-                ${dataBukuString}
+                systemInstruction: `Anda adalah seorang pustakawan. Jawablah pertanyaan berikut dengan baik, sopan, intuitif, ramah untuk orang senior sampai anak-anak dan HANYA berdasarkan konteks yang diberikan. Jika informasinya tidak ada, jika tidak ada jelaskan 'Data buku tersebut tidak tersedia dalam katalog. konteks sebagai berikut:
+                Nama Toko Buku: ${dataBukuHead}
+                List Buku:${dataBukuString}
                 dan jika ada berikan sedikit sinopsis (50 kata saja) diambil data dari internet
                 `.trim(),
            },
