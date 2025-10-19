@@ -24,11 +24,10 @@ how to use:
 5. untuk konteks Gemini sebagai seorang pustakawan hanya mencakup data buku di folder knowledge.dataBuku.json, jika tidak ada maka 'Data buku tersebut tidak tersedia dalam katalog.'
 
 sample prompt:
-halo selamat sore
-'gemini res'
-apakah ada buku tentang filsafat ?
-'gemini res'
-apakah ada buku fantasy
+
+![sample1](https://github.com/patria192/Pelatihan-AI-Pertemuan-5/blob/master/picture/1-sample.PNG)
+![sample1](https://github.com/patria192/Pelatihan-AI-Pertemuan-5/blob/master/picture/2-sample.PNG)
+
 
 example knowledge data json:
 {
