@@ -1,17 +1,27 @@
 how to use:
 1. node js version v22.20.0 & install all dependecy:
+   
    "@google/genai": "^1.25.0",
-    "@langchain/community": "^1.0.0" (except), 
-    "@langchain/core": "^1.0.1" (except), 
+   
+    "@langchain/community": "^1.0.0" (except),
+   
+    "@langchain/core": "^1.0.1" (except),
+   
     "cors": "^2.8.5",
+   
     "dotenv": "^16.4.5",
+   
     "express": "^5.1.0",
-    "hnswlib-node": "^3.0.0" (except), 
+   
+    "hnswlib-node": "^3.0.0" (except),
+    
     "langchain": "^1.0.1",
+   
     "multer": "^2.0.2"
-2. rename .env.example to .env & use your gemini api key
-3. to run server type:  node index.js, use your browser to url http://localhost:3000/
-4. untuk konteks Gemini sebagai seorang pustakawan hanya mencakup data buku di folder knowledge.dataBuku.json, jika tidak ada maka 'Data buku tersebut tidak tersedia dalam katalog.'
+   
+3. rename .env.example to .env & use your gemini api key
+4. to run server type:  node index.js, use your browser to url http://localhost:3000/
+5. untuk konteks Gemini sebagai seorang pustakawan hanya mencakup data buku di folder knowledge.dataBuku.json, jika tidak ada maka 'Data buku tersebut tidak tersedia dalam katalog.'
 
 sample prompt:
 halo selamat sore
